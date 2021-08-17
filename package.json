@@ -13,7 +13,7 @@
     "lib"
   ],
   "license": "MIT",
-  "repository": "zeit/async-retry",
+  "repository": "vercel/async-retry",
   "ava": {
     "failFast": true
   },
