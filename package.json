@@ -18,7 +18,7 @@
     "failFast": true
   },
   "dependencies": {
-    "retry": "0.12.0"
+    "retry": "0.13.1"
   },
   "pre-commit": "lint:staged",
   "lint-staged": {
@@ -39,17 +39,17 @@
     }
   },
   "devDependencies": {
-    "ava": "0.25.0",
-    "eslint": "5.5.0",
-    "eslint-config-airbnb": "17.1.0",
-    "eslint-config-prettier": "3.0.1",
-    "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jsx-a11y": "6.1.1",
-    "eslint-plugin-react": "7.11.1",
-    "lint-staged": "7.2.2",
-    "node-fetch": "2.2.0",
+    "ava": "3.15.0",
+    "eslint": "7.32.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.24.0",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-react": "7.24.0",
+    "lint-staged": "11.1.2",
+    "node-fetch": "2.6.1",
     "pre-commit": "1.2.2",
-    "prettier": "1.14.2",
+    "prettier": "2.3.2",
     "then-sleep": "1.0.1"
   }
 }
