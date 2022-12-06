@@ -6,7 +6,7 @@ const sleep = require('then-sleep');
 // Ours
 const retry = require('../lib');
 
-test('return value', async t => {
+test('return value', async (t) => {
   const val = await retry(async (bail, num) => {
     if (num < 2) {
       throw new Error('woot');
@@ -19,12 +19,12 @@ test('return value', async t => {
   t.deepEqual('woot 2', val);
 });
 
-test('return value no await', async t => {
+test('return value no await', async (t) => {
   const val = await retry(async (bail, num) => num);
   t.deepEqual(1, val);
 });
 
-test('chained promise', async t => {
+test('chained promise', async (t) => {
   const res = await retry(async (bail, num) => {
     if (num < 2) {
       throw new Error('retry');
@@ -36,7 +36,7 @@ test('chained promise', async t => {
   t.deepEqual(200, res.status);
 });
 
-test('bail', async t => {
+test('bail', async (t) => {
   try {
     await retry(
       async (bail, num) => {
@@ -53,12 +53,12 @@ test('bail', async t => {
   }
 });
 
-test('bail + return', async t => {
+test('bail + return', async (t) => {
   let error;
 
   try {
     await Promise.resolve(
-      retry(async bail => {
+      retry(async (bail) => {
         await sleep(200);
         await sleep(200);
         bail(new Error('woot'));
@@ -71,7 +71,7 @@ test('bail + return', async t => {
   t.deepEqual(error.message, 'woot');
 });
 
-test('bail error', async t => {
+test('bail error', async (t) => {
   let retries = 0;
 
   try {
@@ -92,7 +92,7 @@ test('bail error', async t => {
   t.deepEqual(retries, 1);
 });
 
-test('with non-async functions', async t => {
+test('with non-async functions', async (t) => {
   try {
     await retry(
       (bail, num) => {
@@ -105,12 +105,12 @@ test('with non-async functions', async t => {
   }
 });
 
-test('return non-async', async t => {
+test('return non-async', async (t) => {
   const val = await retry(() => 5);
   t.deepEqual(5, val);
 });
 
-test('with number of retries', async t => {
+test('with number of retries', async (t) => {
   let retries = 0;
 
   try {
@@ -123,9 +123,25 @@ test('with number of retries', async t => {
         }
 
         retries = i;
-      }
+      },
     });
   } catch (err) {
     t.deepEqual(retries, 2);
+  }
+});
+
+test('with retry timeout', async (t) => {
+  const retryTimeout = 2000;
+  try {
+    await retry(
+      async () => {
+        await sleep(3000);
+      },
+      {
+        retryTimeout,
+      }
+    );
+  } catch (err) {
+    t.deepEqual(err.message, `Retry timed out in ${retryTimeout}ms`);
   }
 });
