@@ -129,3 +129,19 @@ test('with number of retries', async t => {
     t.deepEqual(retries, 2);
   }
 });
+
+test('with retry timeout', async t => {
+  const retryTimeout = 2000;
+  try {
+    await retry(
+      async () => {
+        await sleep(3000);
+      },
+      {
+        retryTimeout,
+      }
+    );
+  } catch (err) {
+    t.deepEqual(err.message, `Retry timed out in ${retryTimeout}ms`);
+  }
+});
