@@ -129,3 +129,34 @@ test('with number of retries', async t => {
     t.deepEqual(retries, 2);
   }
 });
+
+test('with aborting', async t => {
+  const controller = new AbortController();
+  const error = new Error('end retrying');
+
+  setTimeout(() => {
+    controller.abort(error);
+  }, 100);
+
+  let runs = 0;
+
+  try {
+    await retry(
+      async () => {
+        runs += 1;
+        await sleep(250);
+      },
+      { signal: controller.signal }
+    );
+  } catch (err) {
+    t.deepEqual(err, error);
+  }
+  // Assert it only ran once.
+  t.deepEqual(runs, 1);
+
+  // Wait some more, just to be sure.
+  await sleep(500);
+
+  // Assert it still has only run once.
+  t.deepEqual(runs, 1);
+});
