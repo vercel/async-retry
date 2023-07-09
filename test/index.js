@@ -114,17 +114,23 @@ test('with number of retries', async t => {
   let retries = 0;
 
   try {
-    await retry(() => fetch('https://www.fakewikipedia.org'), {
-      retries: 2,
-      onRetry: (err, i) => {
-        if (err) {
-          // eslint-disable-next-line no-console
-          console.log('Retry error : ', err);
-        }
+    await retry(
+      async () => {
+        await sleep(100);
+        throw new Error('dummy error');
+      },
+      {
+        retries: 2,
+        onRetry: (err, i) => {
+          if (err) {
+            // eslint-disable-next-line no-console
+            console.log('Retry error : ', err);
+          }
 
-        retries = i;
+          retries = i;
+        },
       }
-    });
+    );
   } catch (err) {
     t.deepEqual(retries, 2);
   }
